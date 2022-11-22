@@ -187,9 +187,19 @@ This pattern is very simple. However given that *1.* this involves 'only tests' 
 
 ## Setup
 
+.NET CLI
+
 > dotnet add package Ease.NET
 
-You can choose to install this as a dependency from NuGet.
+Package Reference
+
+> `<PackageReference Include="Ease.NET" Version="1.0.0" />` 
+
+Paket CLI
+
+> paket add Ease.NET
+
+You can also choose to install this as a dependency from NuGet.
 
 The code behind all this is less than 100 lines of code, so you could also choose to copy this into your code bases and maintain that over time, because this is focused on simplicity, it is very unlikely new features will be introduced to this repository.
 
