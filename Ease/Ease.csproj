@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Ease.NET</Title>
+		<Version>1.0.0</Version>
+		<PackageId>Ease.NET</PackageId>
+		<Authors>Thulani Chivandikwa</Authors>
+		<Product>Ease.NET</Product>
+		<Description>
+			Ease.NET
+
+			Test builders done with ease and done right
+
+
+			Easy icons created by Freepik - Flaticon
+		</Description>
+		<PackageProjectUrl>https://github.com/chivandikwa/Ease</PackageProjectUrl>
+		<PackageIcon>snap.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/chivandikwa/Ease</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>fluent builder;builder;test builders;ease .net;ease</PackageTags>
+		<PackageReleaseNotes>v 1.0.0 release 🚀</PackageReleaseNotes>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\..\Users\ThulaniChivandikwa\Downloads\snap.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="..\LICENSE.txt">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>

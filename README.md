@@ -1,8 +1,14 @@
 # Ease.NET
 
+![banner](https://raw.githubusercontent.com/chivandikwa/Ease/main/banner.png)
+
 > Test builders done with ease and done right
 
 Ease is a simple Framework for creating dynamic and fluent builders in .NET, biased towards the use in tests. Intentionally does not come with batteries, for example random data is not part of Ease but it is trivial to add such functionality.
+
+![](https://img.shields.io/badge/.net-7.0-blue?style=for-the-badge&logo=Microsoft)
+
+[![NuGet version (Ease.NET)](https://img.shields.io/nuget/v/Ease.NET.svg?style=flat-square)](https://www.nuget.org/packages/Ease.NET/)
 
 ### Convince me!
 
@@ -180,6 +186,8 @@ internal static class A
 This pattern is very simple. However given that *1.* this involves 'only tests' and *2.* the problem does not seem that complex or pressing, this tends to be highly neglected. The *consequences* are however dire and do not discriminate because these are only tests. The amount of time lost to go around the challenges of not handling this problem properly can be great.
 
 ## Setup
+
+> dotnet add package Ease.NET
 
 You can choose to install this as a dependency from NuGet.
 
