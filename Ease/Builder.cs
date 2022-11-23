@@ -8,11 +8,16 @@ public abstract class Builder<T> : IBuilder<T> where T : class
 {
     private readonly ListDictionary _properties = new();
 
-    public static implicit operator T(Builder<T> builder) => builder.Build();
-
     public Builder<T> With<TProp>(Expression<Func<T, TProp>> action, TProp value)
     {
         _properties[((MemberExpression)action.Body).Member.Name] = value;
+        return this;
+    }
+    
+    public Builder<T> With<TProp, TBuilder>(Expression<Func<T, TProp>> action, TProp value)
+        where TProp : IBuilder<TBuilder>
+    {
+        _properties[((MemberExpression)action.Body).Member.Name] = value.Build();
         return this;
     }
 
@@ -36,13 +41,7 @@ public abstract class Builder<T> : IBuilder<T> where T : class
         _properties[((MemberExpression)action.Body).Member.Name] = value.Build();
         return this;
     }
-
-    public Builder<T> IgnoreProperty<TProp>(Expression<Func<T, TProp>> action)
-    {
-        _properties.Remove(((MemberExpression)action.Body).Member.Name);
-        return this;
-    }
-
+    
     public Builder<T> HavingMany<TProp, TBuilder>(Expression<Func<T, IEnumerable<TProp>>> action,
         params TBuilder[] values)
         where TBuilder : IBuilder<TProp>
@@ -50,10 +49,31 @@ public abstract class Builder<T> : IBuilder<T> where T : class
         _properties[((MemberExpression)action.Body).Member.Name] = values.Select(x => x.Build()).ToList();
         return this;
     }
+    
+    public Builder<T> IgnoreProperty<TProp>(Expression<Func<T, TProp>> action)
+    {
+        _properties.Remove(((MemberExpression)action.Body).Member.Name);
+        return this;
+    }
 
     public Builder<T> For<TProp>(Expression<Func<T, TProp>> action, TProp value)
     {
         _properties[((MemberExpression)action.Body).Member.Name] = value;
+        return this;
+    }
+
+    public Builder<T> For<TProp, TBuilder>(Expression<Func<T, TProp>> action, TProp value)
+        where TProp : IBuilder<TBuilder>
+    {
+        _properties[((MemberExpression)action.Body).Member.Name] = value.Build();
+        return this;
+    }
+    
+    public Builder<T> ForMany<TProp, TBuilder>(Expression<Func<T, IEnumerable<TProp>>> action,
+        params TBuilder[] values)
+        where TBuilder : IBuilder<TProp>
+    {
+        _properties[((MemberExpression)action.Body).Member.Name] = values.Select(x => x.Build()).ToList();
         return this;
     }
 
@@ -88,6 +108,8 @@ public abstract class Builder<T> : IBuilder<T> where T : class
 
         return instance;
     }
+
+    public static implicit operator T(Builder<T> builder) => builder.Build();
 
     public abstract Builder<T> ThatIsValid();
 

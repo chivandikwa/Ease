@@ -6,6 +6,10 @@
 
 Ease is a simple Framework for creating dynamic and fluent builders in .NET, biased towards the use in tests. Intentionally does not come with batteries, for example random data is not part of Ease but it is trivial to add such functionality.
 
+![](https://img.shields.io/badge/.net-5.0-blue?style=for-the-badge&logo=Microsoft)
+
+![](https://img.shields.io/badge/.net-6.0-blue?style=for-the-badge&logo=Microsoft)
+
 ![](https://img.shields.io/badge/.net-7.0-blue?style=for-the-badge&logo=Microsoft)
 
 [![NuGet version (Ease.NET)](https://img.shields.io/nuget/v/Ease.NET.svg?style=flat-square)](https://www.nuget.org/packages/Ease.NET/)
@@ -69,7 +73,7 @@ Now, what could go wrong with the simple approach of calling the constructor or 
 Let's start with another very tempting pattern that I have seen frequently.
 
 ```csharp
-internal class MediocreUserBuilder
+internal class MediocreUserFactory
 {
     internal static User CreateUser(
         string fullName = default,
@@ -85,6 +89,84 @@ This does not solve all the problems or at least does so by introducing new ones
 The biggest problems with this pattern are that it does not communicate intention nor does it evolve well with domain changes. Even with such an abstraction, a lot is still left to the setup phase of the tests, which is not great as this in many test cases would be an auxiliary concern and not the focus of the test, at least something that should not be a distraction with the test. As you can have multiple scenarios also how does this work with this pattern? One way is to add more parameters to control this. Or maybe to create multiple of these methods for each scenario 🤦‍♂️. With this pattern, I often find this code will still be copy pasted to add flexibility, so naturally, I am not promoting this one.
 
 Finally, the tests that use this pattern or other such alternatives all tend to be very long and messy to read. By looking at the code at a glance it is not possible to understand what the `arrange` stage is doing, worse still it makes it hard to distinguish clearly the `arrange` from the `act`.
+
+### A better way
+
+A more reasonable approach would be to make use of custom builers
+
+```csharp
+// option 1
+internal class UserBuilder1
+{
+    private string _fullName;
+    private string _email;
+    private DateTimeOffset _joinedAt;
+    
+    public UserBuilder1 WithFullName(string fullName)
+    {
+        _fullName = fullName;
+        return this;
+    }
+    
+    public UserBuilder1 WithEmail(string email)
+    {
+        _email = email;
+        return this;
+    }
+    
+    public UserBuilder1 HavingJoinedAt(DateTimeOffset joinedAt)
+    {
+        _joinedAt = joinedAt;
+        return this;
+    }
+
+    public User Build() =>
+        new User
+        {
+            FullName = _fullName,
+            Email = _email,
+            JoinedAt = _joinedAt
+        };
+}
+
+// option 2
+internal class UserBuilder2
+{
+    private readonly User _user = new();
+    
+    public UserBuilder2 WithFullName(string fullName)
+    {
+        _user.FullName = fullName;
+        return this;
+    }
+    
+    public UserBuilder2 WithEmail(string email)
+    {
+        _user.Email = email;
+        return this;
+    }
+    
+    public UserBuilder2 HavingJoinedAt(DateTimeOffset joinedAt)
+    {
+        _user.JoinedAt = joinedAt;
+        return this;
+    }
+
+    public User Build() =>
+        _user;
+}
+```
+
+This is great and precisely the approach this library tries to cater for. However, if you observe closely you will notice that the `WithX` methods are just pass-throughs to some backing field or object. This becomes quite some boilerplate as this will likely be the most common scenario with builders. The abstraction introduced here takes those scenarios away by making use of expressions as you will see in the examples that follow. However, with that abstraction, you can still make use of custom methods for scenarios like `ThatIsValid`, the one thing this abstraction enforces, and anything custom in your scenario. For example, a user may have a state Suspended which is not just some boolean flag, but maybe an orchestration of various properties in a given state. To avoid calling multiple builder methods and having this all over your test code, you can have one source of truth for this, that is if the meaning changes, one place to update. Something like this:
+
+```csharp
+public UserBuilder ThatIsSuspended()
+{
+    // complex setup of object to reflect suspended
+    // for example setting multiple properties
+    return this;
+}
+```
 
 ### Get to it already, show me the way!
 

@@ -1,8 +1,9 @@
 <Project>
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
         <Deterministic>true</Deterministic>
         <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 </Project>
