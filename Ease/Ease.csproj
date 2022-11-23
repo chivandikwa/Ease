@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>Ease.NET</Title>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<PackageId>Ease.NET</PackageId>
 		<Authors>Thulani Chivandikwa</Authors>
 		<Product>Ease.NET</Product>
@@ -22,11 +22,10 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>fluent;builder;builders;test;ease;.net;</PackageTags>
 		<PackageReleaseNotes>
-			v 1.0.2 release 🚀
+			v 1.0.3 release 🚀
 
-			Multitarget to .NET 5.0, .NET 6.0 and .NET 7.0
-			Ensure parity between With, For and Having overloads
-			Update README with more examples based on feedback
+			Add documentation remarks for all public/protected methods
+			Add support for builder by key for property bag type scenarios
 		</PackageReleaseNotes>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 	</PropertyGroup>
