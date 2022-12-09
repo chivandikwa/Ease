@@ -84,7 +84,7 @@ internal class MediocreUserFactory
 }
 ```
 
-This does not solve all the problems or at least does so by introducing new ones. As our domain evolves then the method params here become chaotic, notice the optional parameters that are in place to cater to creating the objects without providing everything, this does not scale well at all as more properties are introduced. Things get even more chaotic when there are nested objects and these builder methods also cater to that by maybe falling into the temptation of accepting the raw parameter values. 
+This does not solve all the problems or at least does so by introducing new ones. As our domain evolves then the method params here become chaotic, notice the optional parameters that are in place to cater to creating the objects without providing everything, this does not scale well at all as more properties are introduced. Things get even more chaotic when there are nested objects and these builder methods also cater to that by maybe falling into the temptation of accepting the raw parameter values.
 
 The biggest problems with this pattern are that it does not communicate intention nor does it evolve well with domain changes. Even with such an abstraction, a lot is still left to the setup phase of the tests, which is not great as this in many test cases would be an auxiliary concern and not the focus of the test, at least something that should not be a distraction with the test. As you can have multiple scenarios also how does this work with this pattern? One way is to add more parameters to control this. Or maybe to create multiple of these methods for each scenario 🤦‍♂️. With this pattern, I often find this code will still be copy pasted to add flexibility, so naturally, I am not promoting this one.
 
@@ -101,19 +101,19 @@ internal class UserBuilder1
     private string _fullName;
     private string _email;
     private DateTimeOffset _joinedAt;
-    
+
     public UserBuilder1 WithFullName(string fullName)
     {
         _fullName = fullName;
         return this;
     }
-    
+
     public UserBuilder1 WithEmail(string email)
     {
         _email = email;
         return this;
     }
-    
+
     public UserBuilder1 HavingJoinedAt(DateTimeOffset joinedAt)
     {
         _joinedAt = joinedAt;
@@ -133,19 +133,19 @@ internal class UserBuilder1
 internal class UserBuilder2
 {
     private readonly User _user = new();
-    
+
     public UserBuilder2 WithFullName(string fullName)
     {
         _user.FullName = fullName;
         return this;
     }
-    
+
     public UserBuilder2 WithEmail(string email)
     {
         _user.Email = email;
         return this;
     }
-    
+
     public UserBuilder2 HavingJoinedAt(DateTimeOffset joinedAt)
     {
         _user.JoinedAt = joinedAt;
@@ -198,7 +198,7 @@ var team = A.Team.ThatIsValid();
 // create a team without caring about the details, it should just be valid, but with the exception of some property/properties
 var team = A.Team.ThatIsValid()
             .IgnoreProperty(x => x.Description);
-            
+
 // take control of the values
 const string teamName = "awesome";
 var team = A.Team.With(x => x.Name, teamName)
@@ -267,6 +267,19 @@ internal static class A
 
 This pattern is very simple. However given that *1.* this involves 'only tests' and *2.* the problem does not seem that complex or pressing, this tends to be highly neglected. The *consequences* are however dire and do not discriminate because these are only tests. The amount of time lost to go around the challenges of not handling this problem properly can be great.
 
+## Dynamic Builders
+
+In scenarios where overriding `ThatIsValid` is not required and you are basically creating dynamic objects each time, you can avoid creating a builder altogether and make use of a dynamic builder.
+
+```csharp
+User dynamic = Builder.Of<User>()
+    .With(x => x.FullName, "Dynamic Name")
+    .Build();
+```
+
+> ⚠️ Note that the default instance creation only works for types with a default parameterless constructor.
+
+
 ## Setup
 
 .NET CLI
@@ -275,7 +288,7 @@ This pattern is very simple. However given that *1.* this involves 'only tests' 
 
 Package Reference
 
-> `<PackageReference Include="Ease.NET" Version="1.0.0" />` 
+> `<PackageReference Include="Ease.NET" Version="1.0.5" />`
 
 Paket CLI
 

@@ -17,7 +17,9 @@ public class BuilderTests
     [Fact]
     public void ThatIsValid_IgnoreProperty()
     {
-        
+        User dynamic = Builder.Of<User>()
+            .With(x => x.FullName, "Dynamic Name")
+            .Build();
     }
 
     [Fact]

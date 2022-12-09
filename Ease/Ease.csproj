@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>Ease.NET</Title>
-		<Version>1.0.3</Version>
+		<Version>1.0.5</Version>
 		<PackageId>Ease.NET</PackageId>
 		<Authors>Thulani Chivandikwa</Authors>
 		<Product>Ease.NET</Product>
@@ -22,6 +22,10 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>fluent;builder;builders;test;ease;.net;</PackageTags>
 		<PackageReleaseNotes>
+			v 1.0.5 release 🚀
+
+			Add support for Dynamic Builders
+
 			v 1.0.4 release 🚀
 
 			Ensure that all properties are always optional
