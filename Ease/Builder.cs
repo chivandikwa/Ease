@@ -307,8 +307,11 @@ public abstract class Builder<T> : IBuilder<T> where T : class
     /// <typeparam name="TProp">The property type</typeparam>
     /// <param name="expression">The property selection expression</param>
     /// <returns>The property value</returns>
-    protected TProp Get<TProp>(Expression<Func<T, TProp>> expression) =>
-        (TProp)_properties[((MemberExpression)expression.Body).Member.Name];
+    protected TProp Get<TProp>(Expression<Func<T, TProp>> expression)
+    {
+        var value = _properties[((MemberExpression)expression.Body).Member.Name];
+        return value is not null ? (TProp)value : default;
+    }
 
     /// <summary>
     /// Get the value by explicit string key
@@ -316,8 +319,11 @@ public abstract class Builder<T> : IBuilder<T> where T : class
     /// <typeparam name="TProp">The property type</typeparam>
     /// <param name="key">The string key</param>
     /// <returns>The value</returns>
-    protected TProp Get<TProp>(string key) =>
-        (TProp)_properties[key];
+    protected TProp Get<TProp>(string key)
+    {
+        var value = _properties[key];
+        return value is not null ? (TProp)value : default;
+    }
 
     /// <summary>
     /// Create a new object instance for the builder Build
@@ -337,9 +343,7 @@ public abstract class Builder<T> : IBuilder<T> where T : class
 
         foreach (DictionaryEntry property in _properties)
         {
-            var (key, value) = property;
-
-            typeof(T).GetProperty((string)key)?.SetValue(instance, value);
+            typeof(T).GetProperty((string)property.Key)?.SetValue(instance, property.Value);
         }
 
         return instance;

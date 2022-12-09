@@ -22,6 +22,10 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>fluent;builder;builders;test;ease;.net;</PackageTags>
 		<PackageReleaseNotes>
+			v 1.0.4 release 🚀
+
+			Ensure that all properties are always optional
+
 			v 1.0.3 release 🚀
 
 			Add documentation remarks for all public/protected methods
