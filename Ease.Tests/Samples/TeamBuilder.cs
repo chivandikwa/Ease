@@ -1,5 +1,3 @@
-using Bogus;
-
 namespace Ease.Tests.Samples;
 
 internal class TeamBuilder : Builder<Team>

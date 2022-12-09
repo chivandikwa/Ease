@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Ease;
 
 public static class Builder
 {
-    public static DynamicBuilder<T> Of<T>() where T : class => new();
+    public static DynamicBuilder<T> Of<T>() where T : class, new() => new();
 }
 
 public abstract class Builder<T> : IBuilder<T> where T : class
